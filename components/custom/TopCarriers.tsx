@@ -1,27 +1,17 @@
-"use client";
+import { Carrier } from "@/types/carrierTypes";
 
-import { useState } from "react";
-
-type Carrier = {
-  name: string;
-  frequency: number;
+type TopCarriersProps = {
+  carriers: Carrier[];
 };
 
-const mockCarriers: Carrier[] = [
-  { name: "Carrier A", frequency: 50 },
-  { name: "Carrier B", frequency: 30 },
-  { name: "Carrier C", frequency: 20 },
-];
-
-const TopCarriers = () => {
-  const [carriers] = useState<Carrier[]>(mockCarriers);
+const TopCarriers = ({carriers}: TopCarriersProps) => {
 
   return (
-    <ul className="absolute bottom-20 left-2 bg-white p-2 space-y-2">
+    <ul className="absolute bottom-32 lg:bottom-28 left-7 lg:left-2 bg-white p-2 space-y-2">
       <h3 className="text-sm font-bold">Top Carriers</h3>
       {carriers.map((carrier, index) => (
         <li key={index} className="flex items-center text-xs">
-          {carrier.name} - {carrier.frequency} trips
+          {carrier.name} - {carrier.trucks_per_day} trucks/day
         </li>
       ))}
     </ul>

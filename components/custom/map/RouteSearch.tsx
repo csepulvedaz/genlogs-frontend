@@ -8,6 +8,12 @@ import CustomMap from "./CustomMap";
 import TopCarriers from "../TopCarriers";
 import CityAutocomplete from "./CityAutocomplete";
 
+// Types
+import { Carrier } from "@/types/carrierTypes";
+
+// Services
+import { getTopCarriersByDirection } from "@/services/carrierServices";
+
 const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
 
 export default function RouteSearch() {
@@ -15,6 +21,7 @@ export default function RouteSearch() {
   const [to, setTo] = useState<string>("");
   const [directions, setDirections] =
     useState<google.maps.DirectionsResult | null>(null);
+  const [carriers, setCarriers] = useState<Carrier[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,6 +29,7 @@ export default function RouteSearch() {
     setDirections(null);
     setLoading(false);
     setError(null);
+    setCarriers([]);
   };
 
   const handleSearch = useCallback(async () => {
@@ -41,10 +49,12 @@ export default function RouteSearch() {
           provideRouteAlternatives: true,
           region: "US", // Limit to USA
         },
-        (result, status) => {
+        async (result, status) => {
           setLoading(false);
           if (status === google.maps.DirectionsStatus.OK && result) {
             setDirections(result);
+            const topCarriers = await getTopCarriersByDirection(from, to);
+            setCarriers(topCarriers);
           } else {
             setError(`Error fetching directions: ${status}`);
           }
@@ -59,7 +69,7 @@ export default function RouteSearch() {
 
   return (
     <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
-      <div className="mx-auto relative w-2/3">
+      <div className="mx-auto relative w-full px-5 lg:w-2/3 lg:p-0">
         <div className="flex space-x-4 mb-6 justify-center">
           <CityAutocomplete
             value={from}
@@ -82,7 +92,7 @@ export default function RouteSearch() {
           </Button>
         </div>
         <CustomMap directions={directions} />
-        <TopCarriers />
+        {carriers.length && <TopCarriers carriers={carriers} />}
         {error && <div className="error text-red-500 pt-5">{error}</div>}
       </div>
     </LoadScript>
