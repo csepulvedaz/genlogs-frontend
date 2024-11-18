@@ -11,7 +11,7 @@ const TopCarriers = ({carriers}: TopCarriersProps) => {
       <h3 className="text-sm font-bold">Top Carriers</h3>
       {carriers.map((carrier, index) => (
         <li key={index} className="flex items-center text-xs">
-          {carrier.name} - {carrier.trucks_per_day} trucks/day
+          <b>{index+1}</b>. {carrier.name} - {carrier.trucks_per_day} trucks/day
         </li>
       ))}
     </ul>

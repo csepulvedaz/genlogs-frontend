@@ -92,7 +92,7 @@ export default function RouteSearch() {
           </Button>
         </div>
         <CustomMap directions={directions} />
-        {carriers.length && <TopCarriers carriers={carriers} />}
+        {carriers.length > 0 && <TopCarriers carriers={carriers} />}
         {error && <div className="error text-red-500 pt-5">{error}</div>}
       </div>
     </LoadScript>
