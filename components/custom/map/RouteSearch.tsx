@@ -70,7 +70,7 @@ export default function RouteSearch() {
   return (
     <LoadScript googleMapsApiKey={API_KEY} libraries={["places"]}>
       <div className="mx-auto relative w-full px-5 lg:w-2/3 lg:p-0">
-        <div className="flex space-x-4 mb-6 justify-center">
+        <div className="flex flex-col space-x-0 space-y-5 sm:flex-row sm:space-x-4 sm:space-y-0 mb-6 justify-center">
           <CityAutocomplete
             value={from}
             onChange={setFrom}
@@ -86,7 +86,7 @@ export default function RouteSearch() {
           <Button
             onClick={handleSearch}
             disabled={loading}
-            className="self-end"
+            className="self-end w-full sm:w-auto"
           >
             {loading ? "Loading..." : "Search"}
           </Button>
